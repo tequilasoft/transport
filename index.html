@@ -54,10 +54,10 @@
         }
 
         .routes-title {
-            color: white;
+            color: #000000;
             font-size: 28px;
             font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
         }
 
         .bell-icon {
@@ -221,7 +221,7 @@
         }
 
         .timeline-icon {
-            font-size: 18px;
+            font-size: 26px;
             margin-bottom: 5px;
         }
 
@@ -524,6 +524,120 @@
             box-shadow: 0 4px 16px rgba(255, 140, 66, 0.5);
         }
 
+        /* Onboarding */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .onboarding-overlay.hidden {
+            display: none;
+        }
+
+        .onboarding-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .onboarding-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .onboarding-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .onboarding-description {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .onboarding-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .onboarding-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 140, 66, 0.3);
+            transition: all 0.3s;
+        }
+
+        .onboarding-dot.active {
+            background: #FF8C42;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .onboarding-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .onboarding-btn {
+            padding: 15px 30px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .onboarding-btn-skip {
+            background: rgba(0, 0, 0, 0.1);
+            color: #4a5568;
+        }
+
+        .onboarding-btn-skip:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .onboarding-btn-next {
+            background: linear-gradient(135deg, #FF8C42, #fcb69f);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+        }
+
+        .onboarding-btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
+        }
+
         @media (min-width: 1024px) {
             .side-nav {
                 display: flex;
@@ -648,6 +762,27 @@
     </style>
 </head>
 <body>
+    <div id="onboarding" class="onboarding-overlay">
+        <div class="onboarding-card">
+            <div class="onboarding-icon" id="onboardingIcon">🚌</div>
+            <h2 class="onboarding-title" id="onboardingTitle">¡Bienvenido a TransitGDL!</h2>
+            <p class="onboarding-description" id="onboardingDescription">
+                Tu compañero para moverte por Guadalajara
+            </p>
+            <div class="onboarding-dots">
+                <div class="onboarding-dot active" data-step="0"></div>
+                <div class="onboarding-dot" data-step="1"></div>
+                <div class="onboarding-dot" data-step="2"></div>
+                <div class="onboarding-dot" data-step="3"></div>
+                <div class="onboarding-dot" data-step="4"></div>
+            </div>
+            <div class="onboarding-buttons">
+                <button class="onboarding-btn onboarding-btn-skip" id="skipBtn">Saltar</button>
+                <button class="onboarding-btn onboarding-btn-next" id="nextBtn">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
     <div class="app-container">
         <nav class="side-nav">
             <div class="logo-section">
@@ -659,16 +794,12 @@
                     <span class="nav-menu-icon">🗺️</span>
                     <span>Mapa</span>
                 </div>
-                <div class="nav-menu-item" data-view="stationsView">
-                    <span class="nav-menu-icon">📍</span>
-                    <span>Estaciones</span>
-                </div>
-                <div class="nav-menu-item active" data-view="routesView">
-                    <span class="nav-menu-icon">🎫</span>
-                    <span>Rutas</span>
+                <div class="nav-menu-item active" data-view="transportView">
+                    <span class="nav-menu-icon">🚌</span>
+                    <span>Transporte</span>
                 </div>
                 <div class="nav-menu-item" data-view="ticketsView">
-                    <span class="nav-menu-icon">🚏</span>
+                    <span class="nav-menu-icon">🎫</span>
                     <span>Mis Boletos</span>
                 </div>
                 <div class="nav-menu-item" data-view="profileView">
@@ -698,20 +829,19 @@
                     </div>
                 </div>
 
-                <div id="stationsView" class="view-section hidden">
+                <div id="transportView" class="view-section">
                     <div class="routes-header">
-                        <h1 class="routes-title">Estaciones</h1>
+                        <h1 class="routes-title">Transporte</h1>
                         <div class="bell-icon">🔔</div>
                     </div>
-                    <div id="stationsListView"></div>
-                </div>
-
-                <div id="routesView" class="view-section">
-                    <div class="routes-header">
-                        <h1 class="routes-title">Rutas</h1>
-                        <div class="bell-icon">🔔</div>
-                    </div>
+                    
+                    <!-- Sección de Rutas -->
+                    <h2 style="font-size: 22px; font-weight: 700; color: #000; margin-bottom: 20px;">🎫 Rutas Disponibles</h2>
                     <div id="routesList"></div>
+                    
+                    <!-- Sección de Estaciones -->
+                    <h2 style="font-size: 22px; font-weight: 700; color: #000; margin-bottom: 20px; margin-top: 30px;">📍 Estaciones</h2>
+                    <div id="stationsListView"></div>
                 </div>
 
                 <div id="ticketsView" class="view-section hidden">
@@ -731,7 +861,7 @@
                         <div class="profile-card">
                             <div class="profile-avatar">👤</div>
                             <div class="profile-name">María González</div>
-                            <div class="profile-email">maria.gonzalez@email.com</div>
+                            <div class="profile-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfd2decdd6de91d8d0d1c5ded3dac5ffdad2ded6d391dcd0d2">[email&#160;protected]</a></div>
                             <div class="profile-stats">
                                 <div class="profile-stat">
                                     <div class="profile-stat-value">24</div>
@@ -778,14 +908,11 @@
             <div class="nav-item" data-view="mapView">
                 <div class="nav-icon">🗺️</div>
             </div>
-            <div class="nav-item" data-view="stationsView">
-                <div class="nav-icon">📍</div>
-            </div>
-            <div class="nav-item active" data-view="routesView">
-                <div class="nav-icon active">🎫</div>
+            <div class="nav-item active" data-view="transportView">
+                <div class="nav-icon active">🚌</div>
             </div>
             <div class="nav-item" data-view="ticketsView">
-                <div class="nav-icon">🚏</div>
+                <div class="nav-icon">🎫</div>
             </div>
             <div class="nav-item" data-view="profileView">
                 <div class="nav-icon">👤</div>
@@ -793,7 +920,70 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Onboarding
+        const onboardingSteps = [
+            {
+                icon: '🚌',
+                title: '¡Bienvenido a TransitGDL!',
+                description: 'Tu compañero para moverte por Guadalajara. Descubre cómo usar la app en unos simples pasos.'
+            },
+            {
+                icon: '🗺️',
+                title: 'Mapa en Tiempo Real',
+                description: 'Ve la ubicación de los autobuses y estaciones en el mapa. Todos los buses se actualizan en vivo.'
+            },
+            {
+                icon: '🚌',
+                title: 'Rutas y Estaciones',
+                description: 'En "Transporte" encuentra todas las rutas disponibles y estaciones. Todo organizado en un solo lugar.'
+            },
+            {
+                icon: '🎫',
+                title: 'Gestiona tus Boletos',
+                description: 'Consulta tus boletos activos, próximos viajes e historial completo.'
+            },
+            {
+                icon: '✨',
+                title: '¡Listo para Empezar!',
+                description: 'Ya tienes todo para moverte por Guadalajara. Usa el menú inferior para navegar.'
+            }
+        ];
+
+        let currentOnboardingStep = 0;
+
+        function updateOnboarding() {
+            const step = onboardingSteps[currentOnboardingStep];
+            document.getElementById('onboardingIcon').textContent = step.icon;
+            document.getElementById('onboardingTitle').textContent = step.title;
+            document.getElementById('onboardingDescription').textContent = step.description;
+
+            document.querySelectorAll('.onboarding-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentOnboardingStep);
+            });
+
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentOnboardingStep === onboardingSteps.length - 1) {
+                nextBtn.textContent = '¡Comenzar!';
+            } else {
+                nextBtn.textContent = 'Siguiente';
+            }
+        }
+
+        function nextOnboarding() {
+            if (currentOnboardingStep < onboardingSteps.length - 1) {
+                currentOnboardingStep++;
+                updateOnboarding();
+            } else {
+                skipOnboarding();
+            }
+        }
+
+        function skipOnboarding() {
+            document.getElementById('onboarding').classList.add('hidden');
+        }
+
+        // Datos de la app
         const routes = [
             {id: 1, from: {name: 'Centro Histórico', time: '14 Feb, 10:00'}, to: {name: 'Plaza del Sol', time: '14 Feb, 10:35'}, departure: '05', travelTime: '35 min', timeline: [{type: 'walk', distance: '300 m', time: '10:00'}, {type: 'bus', number: '258', time: '10:08'}, {type: 'bus', number: '275', time: '10:25'}, {type: 'walk', distance: '200 m', time: 'Llegada'}]},
             {id: 2, from: {name: 'Minerva', time: '14 Feb, 11:15'}, to: {name: 'Estadio Akron', time: '14 Feb, 12:00'}, departure: '20', travelTime: '45 min', timeline: [{type: 'walk', distance: '150 m', time: '11:15'}, {type: 'bus', number: '380', time: '11:20'}, {type: 'bus', number: '231', time: '11:45'}, {type: 'walk', distance: '400 m', time: 'Llegada'}]},
@@ -1005,10 +1195,15 @@
         });
 
         window.addEventListener('load', function() {
+            // Event listeners de onboarding
+            document.getElementById('skipBtn').addEventListener('click', skipOnboarding);
+            document.getElementById('nextBtn').addEventListener('click', nextOnboarding);
+            
+            // Inicializar app
             renderRoutes();
             renderStations();
             renderTickets();
-            switchView('routesView');
+            switchView('transportView');
         });
     </script>
 </body>
